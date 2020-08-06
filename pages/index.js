@@ -6,41 +6,50 @@ const Index = () => {
   const [findCityData, setFindCityData] = useState('');
 
   const cityData = (cityName) => {
-    setFindCityData(cityName);
+    const getCityData = cityName;
+    setFindCityData(getCityData);
   }
 
-  const [cities, setCities] = useState([]);
+  const [weatherData, setWeatherData] = useState([]);
 
   useEffect(() => {
-      loadData(findCityData)
-    
+    loadData()
+    console.log(findCityData)
   }, [findCityData]);
-  
-  const loadData = ({findCityData}) => (
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${findCityData}&appid=6e342b0a499de812ed62d8017b901b40`)
+
+  const loadData = async () => (
+    await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${findCityData}&appid=6e342b0a499de812ed62d8017b901b40`)
       .then((res) => res.json())
-      .then(data =>
-        setCities(data.main)
-      )
+      .then(data => {
+        setWeatherData({...data.weather, ...data.main})
+        console.log(data)
+      })
   )
-  console.log(cities);
 
-  let dataToRender = undefined;
+  let dataRendering;
 
-  if(cities){
-    dataToRender = cities.map((data, id) => (
-      <WeatherFetch key={id} temp={data.cities.temp} findCityData={findCityData} />
-    ))
-  } else{
-    dataToRender='Loading...';
+  if (weatherData && findCityData) {
+    dataRendering = < WeatherFetch
+      key={weatherData.id}
+      temp={weatherData.temp}
+      feels_like={weatherData.feels_like}
+      temp_min={weatherData.temp_min}
+      temp_max={weatherData.temp_max}
+      pressure={weatherData.pressure}
+      humidity={weatherData.humidity} 
+      findCityData={findCityData} />
+  } else {
+    dataRendering = "Loading..."
   }
+
 
   return (
     <div>
       <p>Welcome to the Weather API</p>
       <SearchBox cityData={cityData} />
+      <br/>
       <div>
-        {dataToRender}
+        {dataRendering}
       </div>
     </div>
   )

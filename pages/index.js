@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 const Index = () => {
   const [findCityData, setFindCityData] = useState('');
 
-  const cityData = (cityName) => {
+  const onCityClick = (cityName) => {
     const getCityData = cityName;
     setFindCityData(getCityData);
   }
@@ -21,7 +21,7 @@ const Index = () => {
     await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${findCityData}&appid=6e342b0a499de812ed62d8017b901b40`)
       .then((res) => res.json())
       .then(data => {
-        setWeatherData({...data.weather, ...data.main})
+        setWeatherData(data)
         console.log(data)
       })
   )
@@ -29,25 +29,30 @@ const Index = () => {
   let dataRendering;
 
   if (weatherData && findCityData) {
+    console.log(weatherData);
     dataRendering = < WeatherFetch
       key={weatherData.id}
-      temp={weatherData.temp}
-      feels_like={weatherData.feels_like}
-      temp_min={weatherData.temp_min}
-      temp_max={weatherData.temp_max}
-      pressure={weatherData.pressure}
-      humidity={weatherData.humidity} 
+      /*
+      main={weatherData.weather[0].main}
+      icon={weatherData.weather[0].icon}
+      */
+      temp={weatherData.main.temp}
+      feels_like={weatherData.main.feels_like}
+      temp_min={weatherData.main.temp_min}
+      temp_max={weatherData.main.temp_max}
+      pressure={weatherData.main.pressure}
+      humidity={weatherData.main.humidity}
       findCityData={findCityData} />
   } else {
-    dataRendering = "Loading..."
+    dataRendering = "Type City's Name and Press Enter"
   }
 
 
   return (
     <div>
       <p>Welcome to the Weather API</p>
-      <SearchBox cityData={cityData} />
-      <br/>
+      <SearchBox onCityClick={onCityClick} />
+      <br />
       <div>
         {dataRendering}
       </div>

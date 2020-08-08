@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import WeatherFetch from './WeatherFetch';
 
-const SearchBox = ({cityData}) => {
+const SearchBox = (onCityClick) => {
     const [cityName, setCityName] = useState('');
 
     const submitCityName = (e) => {
         e.preventDefault();
         if(!cityName) return;
         console.log(cityName);
-        cityData(cityName);
+        onCityClick(cityName);
         setCityName('');
       }
 

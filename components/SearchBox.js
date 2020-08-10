@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form } from 'react-bootstrap';
-import WeatherFetch from './WeatherFetch';
 
-const SearchBox = (onCityClick) => {
+const SearchBox = ({onCityClick}) => {
     const [cityName, setCityName] = useState('');
 
     const submitCityName = (e) => {
@@ -15,8 +14,8 @@ const SearchBox = (onCityClick) => {
 
     return (
 
-        <Form onSubmit={submitCityName}>
-            <Form.Control size="sm" type="text" placeholder="City's name" 
+        <Form onSubmit={submitCityName} >
+            <Form.Control className="p-4 text" size="sm" type="text" placeholder="City's name" 
             value={cityName} onChange={e => setCityName(e.target.value)} />
         </Form>
     )

@@ -21,7 +21,7 @@ const Index = () => {
 
 
   const loadData = async () => (
-    await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=6e342b0a499de812ed62d8017b901b40`)
+    await fetch(`add-api-link-here`)
       .then((res) => res.json())
       .then(data => {
         setWeatherData(data)
